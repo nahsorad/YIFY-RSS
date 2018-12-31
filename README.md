@@ -1,2 +1,2 @@
 # YIFY-RSS
-YIFY RSS Feed for Android devices
+YIFY RSS Feed reader for Android devices
