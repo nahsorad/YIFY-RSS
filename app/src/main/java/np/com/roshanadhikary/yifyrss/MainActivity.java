@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -20,7 +22,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView lvRss;
+    RecyclerView recyclerView;
+    RecyclerView.Adapter myAdapter;
+    RecyclerView.LayoutManager layoutManager;
     ArrayList<String> titles;
     ArrayList<String> links;
 
@@ -29,9 +33,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lvRss = findViewById(R.id.lvRss);
         titles = new ArrayList<>();
         links = new ArrayList<>();
+
+        recyclerView = findViewById(R.id.list);
+
+        layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setLayoutManager(layoutManager);
+
 
         new ProcessInBackground().execute();
     }
@@ -108,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Exception e) {
             super.onPostExecute(e);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, titles);
-            lvRss.setAdapter(adapter);
+            myAdapter = new MovieAdapter(titles, links);
+            recyclerView.setAdapter(myAdapter);
 
             progressDialog.dismiss();
         }
